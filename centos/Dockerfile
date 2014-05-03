@@ -13,6 +13,7 @@ RUN yum -y install sudo
 RUN yum -y install passwd
 RUN yum -y install openssh-server
 RUN yum -y install openssh-clients
+RUN yum -y install zsh
 RUN yum -y clean all
 
 # Time Zone                                             
@@ -48,6 +49,9 @@ RUN chmod 700 /home/developer/.ssh
 ADD ./authorized_keys /home/developer/.ssh/authorized_keys
 RUN chmod 600 /home/developer/.ssh/authorized_keys
 RUN chown -R developer /home/developer/
+
+# zsh
+RUN chsh -s /bin/zsh developer
 
 EXPOSE 22
 
