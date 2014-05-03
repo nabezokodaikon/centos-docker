@@ -16,7 +16,6 @@ RUN yum -y install openssh-clients
 RUN yum -y install zsh
 RUN yum -y install git
 RUN yum -y install vim
-RUN yum -y clean all
 
 # Time Zone                                             
 RUN echo 'ZONE="Asia/Tokyo"' > /etc/sysconfig/clock     
@@ -70,6 +69,12 @@ RUN ln -s /home/developer/dotfiles/.sbtconfig /home/developer/.sbtconfig
 RUN git clone git://github.com/Shougo/neobundle.vim.git /home/developer/.vim/bundle/neobundle.vim
 RUN chown -R developer:developer /home/developer/
 
+# java
+RUN yum -y install java-1.7.0-openjdk
+RUN yum -y install java-1.7.0-openjdk-devel
+
+# yum clean
+RUN yum -y clean all
 
 EXPOSE 22
 
