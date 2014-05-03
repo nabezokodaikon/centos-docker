@@ -14,6 +14,8 @@ RUN yum -y install passwd
 RUN yum -y install openssh-server
 RUN yum -y install openssh-clients
 RUN yum -y install zsh
+RUN yum -y install git
+RUN yum -y install vim
 RUN yum -y clean all
 
 # Time Zone                                             
@@ -52,6 +54,22 @@ RUN chown -R developer /home/developer/
 
 # zsh
 RUN chsh -s /bin/zsh developer
+
+# dotfiles
+RUN git clone https://github.com/nabezokodaikon/dotfiles.git /home/developer/dotfiles
+RUN rm -f /home/developer/.zshrc
+RUN rm -f /home/developer/.vimrc
+RUN rm -rf /home/developer/.vim
+RUN rm -f /home/developer/.ctags
+RUN rm -f /home/developer/.sbtconfig
+RUN ln -s /home/developer/dotfiles/.zshrc /home/developer/.zshrc
+RUN ln -s /home/developer/dotfiles/.vimrc /home/developer/.vimrc
+RUN ln -s /home/developer/dotfiles/.vim /home/developer/.vim
+RUN ln -s /home/developer/dotfiles/.ctags /home/developer/.ctags
+RUN ln -s /home/developer/dotfiles/.sbtconfig /home/developer/.sbtconfig
+RUN git clone git://github.com/Shougo/neobundle.vim.git /home/developer/.vim/bundle/neobundle.vim
+RUN chown -R developer:developer /home/developer/
+
 
 EXPOSE 22
 
