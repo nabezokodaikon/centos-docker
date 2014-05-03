@@ -28,15 +28,15 @@ RUN ntpdate ntp.nict.jp
 RUN /usr/bin/ssh-keygen -t dsa -f /etc/ssh/ssh_host_dsa_key -C '' -N ''
 RUN /usr/bin/ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key -C '' -N ''
 
-# sudo
-RUN echo "%wheel  ALL=(ALL)  ALL" >> /etc/sudoers.d/wheel
-
 # root ユーザーの ssh ログイン禁止
 RUN sed -ri 's/^#PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
 # パスワードログイン禁止
 RUN sed -ri 's/^UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config
 RUN sed -ri 's/^#UsePAM no/UsePAM no/g' /etc/ssh/sshd_config
 RUN sed -ri 's/^PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config
+
+# sudo
+RUN echo "%wheel  ALL=(ALL)  ALL" >> /etc/sudoers.d/wheel
 
 # Root User
 RUN echo 'root:password' | chpasswd
@@ -49,7 +49,7 @@ RUN mkdir -p /home/developer/.ssh
 RUN chmod 700 /home/developer/.ssh
 ADD ./authorized_keys /home/developer/.ssh/authorized_keys
 RUN chmod 600 /home/developer/.ssh/authorized_keys
-RUN chown -R developer /home/developer/
+RUN chown -R developer:developer /home/developer/
 
 # zsh
 RUN chsh -s /bin/zsh developer
@@ -72,6 +72,15 @@ RUN chown -R developer:developer /home/developer/
 # java
 RUN yum -y install java-1.7.0-openjdk
 RUN yum -y install java-1.7.0-openjdk-devel
+
+# scala
+RUN mkdir /home/developer/bin
+RUN wget -P /home/developer/bin http://repo.typesafe.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/0.13.2/sbt-launch.jar
+RUN echo 'SBT_OPTS="-Xms512M -Xmx1536M -Xss1M -XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=256M" java $SBT_OPTS -jar `dirname $0`/sbt-launch.jar "$@"' > /home/developer/bin/sbt
+RUN chmod u+x /home/developer/bin/sbt
+RUN chown -R developer:developer /home/developer/bin
+RUN runuser -l developer -c "curl https://raw.githubusercontent.com/n8han/conscript/master/setup.sh | sh"
+RUN runuser -l developer -c "cs n8han/giter8"
 
 # yum clean
 RUN yum -y clean all
