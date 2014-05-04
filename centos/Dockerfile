@@ -54,8 +54,15 @@ RUN chown -R developer:developer /home/developer/
 # zsh
 RUN chsh -s /bin/zsh developer
 
+# git
+RUN runuser -l developer -c "git config --global user.name 'developer'"
+RUN runuser -l developer -c "git config --global user.email 'developer@example.com'"
+RUN runuser -l developer -c "git config --global color.ui auto"
+
 # dotfiles
 RUN git clone https://github.com/nabezokodaikon/dotfiles.git /home/developer/dotfiles
+WORKDIR /home/developer/dotfiles
+RUN git remote set-url origin https://nabezokodaikon@github.com/nabezokodaikon/dotfiles.git
 RUN rm -f /home/developer/.zshrc
 RUN rm -f /home/developer/.vimrc
 RUN rm -rf /home/developer/.vim
