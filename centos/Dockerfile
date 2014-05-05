@@ -13,6 +13,7 @@ RUN yum -y install sudo
 RUN yum -y install passwd
 RUN yum -y install openssh-server
 RUN yum -y install openssh-clients
+RUN yum -y install gcc
 RUN yum -y install zsh
 RUN yum -y install git
 RUN yum -y install vim
@@ -60,6 +61,7 @@ RUN runuser -l developer -c "git config --global user.email 'developer@example.c
 RUN runuser -l developer -c "git config --global color.ui auto"
 
 # dotfiles
+#   vim を起動後、:NeoBundleInstall を実行し、プラグインをインストールする。
 RUN git clone https://github.com/nabezokodaikon/dotfiles.git /home/developer/dotfiles
 WORKDIR /home/developer/dotfiles
 RUN git remote set-url origin https://nabezokodaikon@github.com/nabezokodaikon/dotfiles.git
