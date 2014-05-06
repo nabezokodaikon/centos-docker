@@ -1,6 +1,9 @@
 # authorized_keys ファイルを事前に用意して下さい。
 FROM centos
 
+# tig をインストールするため、RPMforge リポジトリ導入。
+RUN rpm -ivh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm
+
 # Update to latest version.
 RUN yum update -y
 
@@ -16,6 +19,7 @@ RUN yum -y install openssh-clients
 RUN yum -y install gcc
 RUN yum -y install zsh
 RUN yum -y install git
+RUN yum -y install tig
 RUN yum -y install vim
 
 # Time Zone                                             
