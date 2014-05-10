@@ -12,6 +12,8 @@ RUN yum -y install curl
 RUN yum -y install ntp
 RUN yum -y install unzip
 RUN yum -y install wget
+RUN yum -y install tar
+RUN yum -y install ctags
 RUN yum -y install sudo
 RUN yum -y install passwd
 RUN yum -y install openssh-server
