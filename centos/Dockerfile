@@ -1,5 +1,5 @@
 # authorized_keys ファイルを事前に用意して下さい。
-FROM centos
+FROM centos:6.4
 
 # tig をインストールするため、RPMforge リポジトリ導入。
 RUN rpm -ivh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm
@@ -23,6 +23,9 @@ RUN yum -y install zsh
 RUN yum -y install git
 RUN yum -y install tig
 RUN yum -y install vim
+
+# Install Japanese Support.
+RUN yum -y groupinstall "Japanese Support"
 
 # Time Zone                                             
 RUN echo 'ZONE="Asia/Tokyo"' > /etc/sysconfig/clock     
@@ -101,4 +104,5 @@ RUN runuser -l developer -c "cs n8han/giter8"
 RUN yum -y clean all
 
 EXPOSE 22
+
 
